@@ -8,9 +8,9 @@ const dbconnect = async () => {
       console.log("we canot found your DB connection.");
     }
     await mongoose.connect(dburl);
-    console.log("DB Connected");
+    return console.log("DB Connected");
   } catch (err) {
-    console.log("Something Wrong, try again.");
+    return console.log("Something Wrong, try again.");
   }
 };
 
