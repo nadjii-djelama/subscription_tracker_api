@@ -1,9 +1,38 @@
 import type { ErrorRequestHandler } from "express";
 
-const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+const errorHandlerMiddleware: ErrorRequestHandler = (err, req, res, next) => {
   try {
-    console.log(err);
+    let error = { ...err };
+    error.message = err.message;
+    console.error(err);
+
+    //Mongoose bad objectID
+    if (error.name === "CastError") {
+      const message = "Resource not found.";
+      error = new Error(message);
+      error.status = 404;
+    }
+
+    //Mongoose duplicate key
+    if (error.code === 11000) {
+      const message = "Duplicate field value entered.";
+      error = new Error(message);
+      error.status = 400;
+    }
+
+    //Mongoose validation error
+    if (error.name === "ValidationError") {
+      const message = Object.values(err.errors).map((val: any) => val.message);
+      error = new Error(message.join(", "));
+      error.status = 400;
+    }
+
+    res.status(error.status || 500).json({
+      error: error.message || "server error",
+    });
   } catch (err) {
     next(err);
   }
 };
+
+export default errorHandlerMiddleware;

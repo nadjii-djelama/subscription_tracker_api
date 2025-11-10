@@ -1,22 +1,15 @@
 import { Router } from "express";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import { signUp, signIn, signOut } from "../controllers/auth.controller.ts";
 
 const router: Router = Router();
 
 // Sign up
-router.post("/sign-up", async (req, res) => {
-  res.json({ message: "welcome in the auth page" });
-});
+router.post("/sign-up", signUp);
 
 // Sign in
-router.post("/sign-in", async (req, res) => {
-  res.json({ message: "welcome in the auth page" });
-});
+router.post("/sign-in", signIn);
 
 // Sign out
-router.post("/sign-out", async (req, res) => {
-  res.json({ message: "welcome in the auth page" });
-});
+router.post("/sign-out", signOut);
 
 export default router;

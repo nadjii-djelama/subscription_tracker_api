@@ -1,10 +1,20 @@
 import express from "express";
 import envConfig from "./config/env.config.ts";
+import cookieParser from "cookie-parser";
 // DB connection
 import dbconnect from "./config/db.config.ts";
 await dbconnect();
 
 const app = express();
+
+//Middlewares
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+
+// Error middleware
+import errorHandlerMiddleware from "./middlewares/error.middleware.ts";
+app.use(errorHandlerMiddleware);
 
 // Routes
 import authRoute from "./routes/auth.route.ts";
