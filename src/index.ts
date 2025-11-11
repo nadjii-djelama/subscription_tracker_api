@@ -18,13 +18,13 @@ app.use(errorHandlerMiddleware);
 
 // Routes
 import authRoute from "./routes/auth.route.ts";
-app.use("/api/v1//auth", authRoute);
+app.use("/api/v1/auth", authRoute);
 
 import userRoute from "./routes/user.route.ts";
-app.use("/api/v1//user", userRoute);
+app.use("/api/v1/user", userRoute);
 
 import subscriptionRoute from "./routes/subscription.route.ts";
-app.use("/api/v1//subscription", subscriptionRoute);
+app.use("/api/v1/subscription", subscriptionRoute);
 // server port
 const port = process.env.PORT;
 app.listen(port, () => console.log(`server run in port ${port}`));
