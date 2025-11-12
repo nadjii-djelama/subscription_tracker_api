@@ -1,22 +1,11 @@
 import e, { Router } from "express";
-import mongoose from "mongoose";
 import User from "../models/user.model.ts";
-import bcrypt from "bcrypt";
+import { getAllUsers, getUserById } from "../controllers/user.controller.ts";
+import { authorization } from "../middlewares/auth.middleware.ts";
 
 const router: Router = Router();
 
-router.get("/all", async (req, res) => {
-  res.json({ message: "nadji" });
-});
-router.get("/:id", async (req, res) => {
-  res.json({ message: "nadji" });
-});
-router.post("/create", async (req, res) => {});
-router.put("/edit", async (req, res) => {
-  res.json({ message: "nadji" });
-});
-router.delete("/delete/:id", async (req, res) => {
-  res.json({ message: "nadji" });
-});
+router.get("/users", getAllUsers);
+router.get("/user/:id", getUserById);
 
 export default router;
