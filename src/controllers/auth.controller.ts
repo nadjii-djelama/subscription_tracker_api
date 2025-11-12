@@ -43,7 +43,38 @@ const signUp = async (req: Request, res: Response, next: NextFunction) => {
     next(err);
   }
 };
-const signIn = async (req: Request, res: Response, next: NextFunction) => {};
+const signIn = async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ message: "Email and Password are required." });
+    }
+    const findUser = await User.findOne({ email });
+    if (!findUser) {
+      return res.status(404).json({ message: "User not found. try again." });
+    }
+    const isPasswordValid = await bcrypt.compare(password, findUser.password);
+    if (!isPasswordValid) {
+      return res
+        .status(401)
+        .json({ message: "Wrong password, try with a different one." });
+    }
+    const token = jwt.sign(
+      { id: findUser._id },
+      process.env.JWT_SECRET as string,
+      { expiresIn: "1D" }
+    );
+    return res.status(200).json({
+      message: "User logged In",
+      user: { name: findUser.name, email: findUser.email },
+      Token: token,
+    });
+  } catch (err) {
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
 const signOut = async (req: Request, res: Response, next: NextFunction) => {};
 
 export { signUp, signIn, signOut };
