@@ -13,9 +13,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-// Error middleware
-import errorHandlerMiddleware from "./middlewares/error.middleware.ts";
-app.use(errorHandlerMiddleware);
+// Arcjet security middleware
+import arcjetMidleware from "./middlewares/arcjet.midleware.ts";
+app.use(arcjetMidleware);
 
 // Routes
 import authRoute from "./routes/auth.route.ts";
@@ -26,6 +26,11 @@ app.use("/api/v1", authorization, userRoute);
 
 import subscriptionRoute from "./routes/subscription.route.ts";
 app.use("/api/v1/subscription", authorization, subscriptionRoute);
+
+// ErrorHandling middleware
+import errorHandlerMiddleware from "./middlewares/error.middleware.ts";
+app.use(errorHandlerMiddleware);
+
 // server port
 const port = process.env.PORT;
 app.listen(port, () => console.log(`server run in port ${port}`));
