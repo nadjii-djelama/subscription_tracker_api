@@ -47,7 +47,7 @@ const subscriptionSchema = new mongoose.Schema(
     },
     startDate: {
       type: Date,
-      required: [true, "Start date is required."],
+      required: [true],
       validate: {
         validator: (value: Date) => value <= new Date(),
         message: "Start date cannot be in the future.",
@@ -55,7 +55,6 @@ const subscriptionSchema = new mongoose.Schema(
     },
     renewalDate: {
       type: Date,
-      required: [true, "renewal date is required."],
       validate: {
         validator: function (value: Date) {
           return value > this.startDate;
@@ -79,21 +78,29 @@ interface ISubscription extends mongoose.Document {
   status: "active" | "cancelled" | "expired" | "pending";
 }
 
-subscriptionSchema.pre<ISubscription>("save", function (next) {
+subscriptionSchema.pre("save", function (next) {
   if (!this.renewalDate) {
-    const renewperiods: Record<"weekly" | "monthly" | "yearly", number> = {
-      weekly: 7,
-      monthly: 30,
-      yearly: 365,
-    };
-
     const renewalDate = new Date(this.startDate);
-    renewalDate.setDate(renewalDate.getDate() + renewperiods[this.frequency]);
+
+    switch (this.frequency) {
+      case "weekly":
+        renewalDate.setDate(renewalDate.getDate() + 7); // ✓ Correct
+        break;
+      case "monthly":
+        renewalDate.setMonth(renewalDate.getMonth() + 1); // ✓ Use setMonth
+        break;
+      case "yearly":
+        renewalDate.setFullYear(renewalDate.getFullYear() + 1); // ✓ Use setFullYear
+        break;
+    }
+
     this.renewalDate = renewalDate;
   }
+
   if (this.renewalDate < new Date()) {
     this.status = "expired";
   }
+
   next();
 });
 

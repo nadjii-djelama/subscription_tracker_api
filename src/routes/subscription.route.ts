@@ -1,4 +1,8 @@
 import { Router } from "express";
+import {
+  createSubscription,
+  getAllUserSubscriptions,
+} from "../controllers/subscription.controller.ts";
 
 const router: Router = Router();
 
@@ -6,13 +10,9 @@ router.get("/", async (req, res) => {
   res.json({ message: "get subscription" });
 });
 
-router.get("/:id", async (req, res) => {
-  res.json({ message: "get subscription" });
-});
+router.get("/allusersubscriptions/:id", getAllUserSubscriptions);
 
-router.post("/create", async (req, res) => {
-  res.json({ message: "get subscription" });
-});
+router.post("/create", createSubscription);
 
 router.put("/edit/:id", async (req, res) => {
   res.json({ message: "get subscription" });
