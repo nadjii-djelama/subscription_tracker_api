@@ -1,7 +1,5 @@
-import e, { Router } from "express";
-import User from "../models/user.model.ts";
+import { Router } from "express";
 import { getAllUsers, getUserById } from "../controllers/user.controller.ts";
-import { authorization } from "../middlewares/auth.middleware.ts";
 
 const router: Router = Router();
 

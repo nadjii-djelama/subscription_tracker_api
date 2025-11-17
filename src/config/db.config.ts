@@ -5,12 +5,13 @@ const dbconnect = async () => {
   try {
     const dburl = process.env.DB_URI as string;
     if (!dburl) {
-      console.log("we canot found your DB connection.");
+      throw new Error("Database URI not found in environment variables");
     }
     await mongoose.connect(dburl);
-    return console.log("DB Connected");
-  } catch (err) {
-    return console.log("Something Wrong, try again.");
+    console.log("✅ Database connected successfully");
+  } catch (err: any) {
+    console.error("❌ Database connection error:", err.message);
+    process.exit(1); // Exit if DB connection fails
   }
 };
 

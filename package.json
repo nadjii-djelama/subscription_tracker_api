@@ -1,13 +1,19 @@
 {
-  "name": "subscription_tarcking_api",
+  "name": "subscription_tracking_api",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "API for tracking subscriptions",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon ./src/index.ts"
+    "dev": "nodemon ./src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": [
+    "subscription",
+    "api",
+    "tracking"
+  ],
   "author": "",
   "license": "ISC",
   "type": "module",
@@ -28,9 +34,11 @@
   "dependencies": {
     "@arcjet/inspect": "^1.0.0-beta.14",
     "@arcjet/node": "^1.0.0-beta.14",
+    "@upstash/workflow": "^0.2.22",
     "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
+    "dayjs": "^1.11.19",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",

@@ -1,8 +1,9 @@
 import type { Request, Response, NextFunction } from "express";
 import User from "../models/user.model.ts";
+
 const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const getUsers = await User.find().select("name email token createdAt");
+    const getUsers = await User.find().select("name email createdAt"); // ❌ Removed "token" - doesn't exist in schema
     return res.status(200).json({ users: getUsers });
   } catch (err: any) {
     return res
@@ -14,9 +15,9 @@ const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
 const getUserById = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
-    const user = await User.findById(id).select("name email token createdAt");
+    const user = await User.findById(id).select("name email createdAt"); // ❌ Removed "token"
     if (!user) {
-      return res.status(201).json({ message: "User doesn't exist." });
+      return res.status(404).json({ message: "User doesn't exist." }); // ❌ FIXED: Was 201 (Created) - should be 404 (Not Found)
     }
     return res.status(200).json({ user: user });
   } catch (err: any) {

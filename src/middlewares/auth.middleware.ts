@@ -36,7 +36,7 @@ const authorization = async (
     next();
   } catch (err: any) {
     return res
-      .status(500)
+      .status(401) // ❌ Should be 401 for auth errors, not 500
       .json({ message: "Internal error", error: err.message });
   }
 };
